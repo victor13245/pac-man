@@ -104,11 +104,13 @@ def confirmGenerate():
 def setModuleName(module, filename):
     functionType = type(confirmGenerate)
     classType = type(optparse.Option)
-
+#functionType și classType sunt două variabile care stochează tipurile funcțiilor și claselor din fiecare module curent
     for i in dir(module):
+        #Se utilizează un ciclu for pentru a itera prin toate atributele obiectului module folosind funcția dir(module).
         o = getattr(module, i)
         if hasattr(o, '__file__'): continue
-
+        #Se verifică dacă obiectul are un atribut special __file__. Dacă are, se trece la următoarea iterație a buclei
+        #Se verifică tipul obiectului type(o) și se compară cu functionType și classType
         if type(o) == functionType:
             setattr(o, '__file__', filename)
         elif type(o) == classType:
