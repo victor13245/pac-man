@@ -19,7 +19,7 @@ import random
 from util import manhattanDistance
 import util
 
-class GhostAgent( Agent ):
+class GhostAgent( Agent ): 
     def __init__( self, index ):
         self.index = index
 
