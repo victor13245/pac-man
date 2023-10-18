@@ -18,19 +18,19 @@ import random
 import game
 import util
 
-class LeftTurnAgent(game.Agent): #aceasta clasa reprezinta un agent care intotdeauna vireaza la stanga in fiecare oportunitate in joc
+class LeftTurnAgent(game.Agent): #se defineste o clasa noua, numita LeftTurnAgent care mosteneste de la clasa game.Agent
     "An agent that turns left at every opportunity"
 
-    def getAction(self, state):
-        legal = state.getLegalPacmanActions() #aici se obtin actiunile legale pe care le poate face pacman in joc
-        current = state.getPacmanState().configuration.direction #se obtine directia actuala in care se afla pacman in joc
-        if current == Directions.STOP: current = Directions.NORTH #daca directia actuala este "stop" (pacman sta pe loc) atunci se seteaza directia curenta la "north" (pacman merge in sus)
-        left = Directions.LEFT[current] #se obtine directia la stanga in functie de directia curenta
-        if left in legal: return left #daca directia la stanga este una legala atunci se returneaza acea directie
-        if current in legal: return current #daca directia curenta este o actiune legala, atunci se returneaza acea directie
-        if Directions.RIGHT[current] in legal: return Directions.RIGHT[current] #daca directia la dreapta in functie de directia curenta este o actiune legala, atunci se returneaza acea directie (la dreapta)
-        if Directions.LEFT[left] in legal: return Directions.LEFT[left] #daca directia la dreapta in functie de directia curenta este o actiune legala, atunci se returneaza acea directie (la stanga)
-        return Directions.STOP #daca niciuna dintre actiuni nu este legata pacman se opreste
+    def getAction(self, state): #metoda getAction primeste 2 parametri
+        legal = state.getLegalPacmanActions() #aici se obtin actiunile pe care le poate efectua agentul
+        current = state.getPacmanState().configuration.direction #aici se obtine directia curenta in care se afla agentul
+        if current == Directions.STOP: current = Directions.NORTH #daca directia curenta este STOP, atunci trebuie schimbata la NORTH
+        left = Directions.LEFT[current] #se calculeaza directia la stanga a directiei curente
+        if left in legal: return left 
+        if current in legal: return current
+        if Directions.RIGHT[current] in legal: return Directions.RIGHT[current]
+        if Directions.LEFT[left] in legal: return Directions.LEFT[left]
+        return Directions.STOP
 
 class GreedyAgent(Agent):
     def __init__(self, evalFn="scoreEvaluation"):

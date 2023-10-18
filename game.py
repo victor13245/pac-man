@@ -153,7 +153,7 @@ class AgentState: # pac-man / fantomele din pac-man (entitatile care merg)
         return state
 
     def getPosition(self):
-        if self.configuration == None: return None
+        if self.configuration == None: return None #Daca self.configuration este egala cu "None", va returna None
         return self.configuration.getPosition()
 
     def getDirection(self):
