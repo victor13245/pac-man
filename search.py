@@ -114,11 +114,57 @@ def depthFirstSearch(problem):
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    from util import Stack
+    stacc = Stack()                # stiva de la dfs
+    stacc.push(problem.getStartState()) # pun poz de start pe stiva
+    visited = []                    # lista cu ce am vizitat
+    tempPath=[]                     # cale temporara
+    path=[]                         # calea catre final
+    pathToCurrent=Stack()           # stiva care tine pathurile facute pe parcurs
+    currState = stacc.pop()        # scot ultima poz din stiva ca ma pun sa o prelucrez
+    while not problem.isGoalState(currState): #cat timp nu am ajuns la final
+        if currState not in visited:
+            visited.append(currState) # daca nu e vizitata pozitia o pun in visited
+            successors = problem.expand(currState) # vecinii pozitiei curente
+            for child,direction,cost in successors:
+                stacc.push(child) # pun vecinul in stiva 
+                tempPath = path + [direction] # path temporar ce contine directiile pe care le-am luat pana acum + directia in care se afla vecinul curnet
+                pathToCurrent.push(tempPath) # pun pathul facut pana aici in stiva de pathuri
+        currState = stacc.pop() # trec la pozitia urmatoare (unul dintre vecinii pusi anterior pe stiva)
+        path = pathToCurrent.pop() # schimb pozitia pathului cu ultima pe care am pus-o
+    return path
+
+
+
+    #util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
+
+    from util import Queue
+    coada = Queue()                        # Literalmente la fel ca la dfs dar cu coada nu stiva
+    coada.push(problem.getStartState())
+    visited = []                            
+    tempPath=[]                             
+    path=[]                                  
+    pathToCurrent=Queue()                   
+    currState = coada.pop()
+    while not problem.isGoalState(currState):
+        if currState not in visited:
+            visited.append(currState)    
+            successors = problem.expand(currState)
+            for child,direction,cost in successors:
+                coada.push(child)
+                tempPath = path + [direction]
+                pathToCurrent.push(tempPath)
+        currState = coada.pop()
+        path = pathToCurrent.pop()
+        
+    return path
+
+
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
@@ -131,6 +177,29 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
+
+    from util import Queue,PriorityQueue #la fel ca si celelalte dar cu priority queue (cu cat valoare de prioritate e mai mica cu atat e mai prioritar)
+    fringe = PriorityQueue()                    
+    fringe.push(problem.getStartState(),0)
+    currState = fringe.pop()
+    visited = []                                
+    tempPath=[]                                 
+    path=[]                                      
+    pathToCurrent=PriorityQueue()               
+    while not problem.isGoalState(currState):
+        if currState not in visited:
+            visited.append(currState)
+            successors = problem.expand(currState)
+            for child,direction,cost in successors:
+                tempPath = path + [direction]
+                costToGo = problem.getCostOfActions(tempPath) + heuristic(child,problem)
+                if child not in visited: # la asta mai trb sa verific si copilul sa nu fie vizitat
+                    fringe.push(child,costToGo)
+                    pathToCurrent.push(tempPath,costToGo)
+        currState = fringe.pop()
+        path = pathToCurrent.pop()    
+    return path
+
     util.raiseNotDefined()
 
 
