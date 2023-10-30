@@ -192,7 +192,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             successors = problem.expand(currState)
             for child,direction,cost in successors:
                 tempPath = path + [direction]
-                costToGo = problem.getCostOfActions(tempPath) + heuristic(child,problem)
+                costToGo = problem.getCostOfActionSequence(tempPath) + heuristic(child,problem)
                 if child not in visited: # la asta mai trb sa verific si copilul sa nu fie vizitat
                     fringe.push(child,costToGo)
                     pathToCurrent.push(tempPath,costToGo)
